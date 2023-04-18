@@ -11,6 +11,8 @@
  * scp LCD.c LCD.h main.c makefile mash9756@192.168.1.161:/home/mash9756/LCD
  * scp main mash9756@192.168.1.161:/home/mash9756/VL6180X
  * 
+        scp test mash9756@192.168.1.161:/home/mash9756/VL6180X
+
  * ssh mash9756@192.168.1.161
  * 
  * arm-linux-gnueabihf-gcc
@@ -51,5 +53,14 @@ int main()
     
     VL6180X_init();
 
+    //int result = 0;
+
+    // while(1)
+    // {
+    //     //result = VL6180X_read();
+    //     printf("\nMeasured Value: %d", result);
+    //     gpioDelay(100000);
+    // }
+    gpioTerminate();
     return 0;
 }
