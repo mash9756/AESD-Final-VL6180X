@@ -12,10 +12,10 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "../WiringPi/wiringPi/wiringPi.h"
-#include "../WiringPi/wiringPi/wiringPiI2C.h"
 #include <stdio.h>
+#include <pigpio.h>
 
 #define VL6180X_ADDR    (0x29)
+#define I2C_BUS_NUM     (1)
 
 void VL6180X_init();
