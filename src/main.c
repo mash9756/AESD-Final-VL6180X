@@ -36,6 +36,9 @@ int main()
 
 	while(1)
 	{
+		printf("\nClearing LCD");
+		ioctl(lcd, LCDCHAR_IOCCLEAR);
+
 		als = get_ALS(handle);
 		printf("\nAmbient Light Value: %d", als);
 		printf("\nPrinting to LCD");
@@ -43,8 +46,6 @@ int main()
 		write(lcd, lineOne, LINE_LEN);
 		printf("\nWrote %d bytes to LCD", bytes);
 		sleep(5);
-		printf("\nClearing LCD");
-		ioctl(lcd, LCDCHAR_IOCCLEAR);
 	}
 
 	return 0;
