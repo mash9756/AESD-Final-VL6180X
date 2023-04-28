@@ -1,66 +1,49 @@
 /**
- *  @file       main.c
- *  @author     Mark Sherman
- * 
- *  @brief      main loop
- *  @date       4/1/23
- *  @version    1.0
-*/
-
-/**
- * scp LCD.c LCD.h main.c makefile mash9756@192.168.1.161:/home/mash9756/LCD
- * scp main mash9756@192.168.1.161:/home/mash9756/VL6180X
- * 
-        scp test mash9756@192.168.1.161:/home/mash9756/VL6180X
-
- * ssh mash9756@192.168.1.161
- * 
- * arm-linux-gnueabihf-gcc
- * 
- * username: mash9756
- * password: aesd2021
- * 
- * -L/user/local/lib/ -I/home/admin/Documents/Final-Project/pigpio/
- * 
- * PATH=/home/admin/Downloads/cross-pi-gcc-10.2.0-0/bin:$PATH
- * 
- * update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc-10-2 100
  * 
 */
 
-#include "VL6180X.h"
-const int ledPin = 21;
+#include "vl6180_pi.h"
+#include <stdio.h>
+#include <unistd.h>
+
+#include <fcntl.h>
+#include <sys/stat.h>
+
+#include "LCD_ioctl"
+
+#define LCD_CHAR_DRIVER	("/dev/LCD_device")
+#define LINE_LEN		(16)
 
 int main()
 {
-    gpioInitialise(); // Initialise WiringPi with Broadcom GPIO pins
+	vl6180 handle = vl6180_initialise(1);
 
-    gpioSetMode(ledPin, PI_OUTPUT); // Set LED Pin as an output
+	if(handle<=0)
+	{
+		return 1;
+	}
 
-    printf("\nHello World!\n");
+	get_ID(handle);
+	sleep(1);
 
-    // Turn LED On
-    printf("LED On\n");
-    gpioWrite(ledPin, PI_HIGH);
+	int als 	= 0;
+	int bytes 	= 0;
+	char lineOne[LINE_LEN];
+	
+	int lcd = open(LCD_CHAR_DRIVER, O_RDWR|O_CREAT|O_APPEND, S_IRWXU|S_IRWXG|S_IRWXO);
 
-    gpioDelay(1000000);
+	while(1)
+	{
+		als = get_ALS(handle);
+		printf("\nAmbient Light Value: %d", als);
+		printf("\nPrinting to LCD");
+		bytes = snprintf(lineOne, LINE_LEN, "ALS: %d Lux", als);
+		write(lcd, lineOne, LINE_LEN);
+		printf("\nWrote %d bytes to LCD", bytes);
+		sleep(5);
+		printf("\nClearing LCD");
+		ioctl(lcd, LCDCHAR_IOCCLEAR);
+	}
 
-    // Turn LED off
-    printf("LED Off\n");
-    gpioWrite(ledPin, PI_LOW);
-
-    gpioDelay(1000000);
-    
-    VL6180X_init();
-
-    //int result = 0;
-
-    // while(1)
-    // {
-    //     //result = VL6180X_read();
-    //     printf("\nMeasured Value: %d", result);
-    //     gpioDelay(100000);
-    // }
-    gpioTerminate();
-    return 0;
+	return 0;
 }
