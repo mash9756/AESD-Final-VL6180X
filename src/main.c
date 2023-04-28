@@ -30,6 +30,7 @@ int main()
 
 	int als 	= 0;
 	int bytes 	= 0;
+	int i 		= 0;
 	char lineOne[LINE_LEN];
 	
 	int lcd = open(LCD_CHAR_DRIVER, O_RDWR|O_CREAT|O_APPEND, S_IRWXU|S_IRWXG|S_IRWXO);
@@ -40,10 +41,14 @@ int main()
 		ioctl(lcd, LCDCHAR_IOCCLEAR);
 
 		als = get_ALS(handle);
-		printf("\nAmbient Light Value: %d", als);
-		printf("\nPrinting to LCD");
 		bytes = snprintf(lineOne, LINE_LEN, "ALS: %d Lux", als);
-		write(lcd, lineOne, LINE_LEN);
+		printf("\n%s", lineOne);
+
+		while(lineOne[i] != '\0')
+			i++;
+
+		printf("\nPrinting to LCD");
+		write(lcd, lineOne, i);
 		printf("\nWrote %d bytes to LCD", bytes);
 		sleep(5);
 	}
