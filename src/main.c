@@ -1,5 +1,7 @@
 /**
+ * 	TODO: add comments and file info
  * 
+ * 	look into sensor value calculation, is it fine by default?
 */
 
 #include "vl6180_pi.h"
@@ -9,21 +11,17 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-#include "LCD_ioctl"
+#include "LCD_ioctl.h"
 
 #define LCD_CHAR_DRIVER	("/dev/LCD_device")
 #define LINE_LEN		(16)
 
 int main()
 {
-	printf("\nRunning VL6180x Main...");
 	vl6180 handle = vl6180_initialise(1);
 
 	if(handle<=0)
-	{
-		printf("\nNo VL6180x handle.");
 		return 1;
-	}
 
 	get_ID(handle);
 	sleep(1);
@@ -37,19 +35,16 @@ int main()
 
 	while(1)
 	{
-		printf("\nClearing LCD");
+		i = 0;
 		ioctl(lcd, LCDCHAR_IOCCLEAR);
 
 		als = get_ALS(handle);
 		bytes = snprintf(lineOne, LINE_LEN, "ALS: %d Lux", als);
-		printf("\n%s", lineOne);
 
 		while(lineOne[i] != '\0')
 			i++;
 
-		printf("\nPrinting to LCD");
 		write(lcd, lineOne, i);
-		printf("\nWrote %d bytes to LCD", bytes);
 		sleep(5);
 	}
 
