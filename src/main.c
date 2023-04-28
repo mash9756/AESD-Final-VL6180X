@@ -27,7 +27,6 @@ int main()
 	sleep(1);
 
 	int als 	= 0;
-	int bytes 	= 0;
 	int i 		= 0;
 	char lineOne[LINE_LEN];
 	
@@ -39,7 +38,7 @@ int main()
 		ioctl(lcd, LCDCHAR_IOCCLEAR);
 
 		als = get_ALS(handle);
-		bytes = snprintf(lineOne, LINE_LEN, "ALS: %d Lux", als);
+		snprintf(lineOne, LINE_LEN, "ALS: %d Lux", als);
 
 		while(lineOne[i] != '\0')
 			i++;
