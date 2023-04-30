@@ -35,7 +35,7 @@ int main()
 	while(1)
 	{
 		i = 0;
-		ioctl(lcd, LCDCHAR_IOCCLEAR);
+		ioctl(lcd, LCDCHAR_IOCCLEAR, LCD_CLEAR_INS);
 
 		als = get_ALS(handle);
 		snprintf(lineOne, LINE_LEN, "ALS: %d Lux", als);
