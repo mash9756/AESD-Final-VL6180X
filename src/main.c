@@ -44,7 +44,7 @@ int main()
 			i++;
 
 		write(lcd, lineOne, i);
-		sleep(5);
+		sleep(3);
 	}
 
 	return 0;
