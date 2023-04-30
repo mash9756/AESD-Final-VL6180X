@@ -29,8 +29,11 @@ int main()
 	int als 	= 0;
 	int i 		= 0;
 	char lineOne[LINE_LEN];
-	char clear 	= LCD_CLEAR_INS;
 	
+	struct LCD_clear clear;
+	clear.clear_cmd = (char *)LCD_CLEAR_INS;
+	printf("\nclear command: %s", clear.clear_cmd);
+
 	int lcd = open(LCD_CHAR_DRIVER, O_RDWR|O_CREAT|O_APPEND, S_IRWXU|S_IRWXG|S_IRWXO);
 
 	while(1)
