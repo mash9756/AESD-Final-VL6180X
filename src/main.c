@@ -1,7 +1,8 @@
 /**
- * 	TODO: add comments and file info
+ *  @file       main.c
+ *  @author     Mark Sherman
  * 
- * 	look into sensor value calculation, is it fine by default?
+ *  @brief      Main loop for reading and print ALS values
 */
 
 #include "vl6180_pi.h"
