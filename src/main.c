@@ -29,17 +29,13 @@ int main()
 	int als 	= 0;
 	int i 		= 0;
 	char lineOne[LINE_LEN];
-	
-	struct LCD_clear clear;
-	clear.clear_cmd[0] = (char)LCD_CLEAR_INS;
-	printf("\nclear command: %s", clear.clear_cmd);
 
 	int lcd = open(LCD_CHAR_DRIVER, O_RDWR|O_CREAT|O_APPEND, S_IRWXU|S_IRWXG|S_IRWXO);
 
 	while(1)
 	{
 		i = 0;
-		ioctl(lcd, LCDCHAR_IOCCLEAR, &clear);
+		ioctl(lcd, LCDCHAR_IOCCLEAR);
 
 		als = get_ALS(handle);
 		snprintf(lineOne, LINE_LEN, "ALS: %d Lux", als);
